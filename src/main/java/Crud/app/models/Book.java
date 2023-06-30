@@ -1,6 +1,7 @@
 package Crud.app.models;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class Book {
@@ -11,7 +12,7 @@ public class Book {
     @NotEmpty(message = "author should exist")
     @Size(min=2, max=40, message = "Authors name should be between 2 and 40 characters")
     private String author;
-    @NotEmpty
+    @NotNull
     private int year;
 
     public String getAuthor() {
