@@ -1,11 +1,9 @@
 package Crud.app.models;
 import javax.validation.constraints.*;
-import java.util.List;
 
 
 public class Person {
 
-    private List<Book> bookList;
     private int id;
 
     @NotEmpty(message = "Name should not be empty")
@@ -25,7 +23,6 @@ public class Person {
         this.id = id;
         this.yearOfBirth = yearOfBirth;
         this.nameLastname = nameLastname;
-
     }
 
     public int getId() {
