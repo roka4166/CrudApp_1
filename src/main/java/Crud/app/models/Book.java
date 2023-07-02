@@ -1,8 +1,6 @@
 package Crud.app.models;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 public class Book {
     private int id;
@@ -12,8 +10,12 @@ public class Book {
     @NotEmpty(message = "author should exist")
     @Size(min=2, max=40, message = "Authors name should be between 2 and 40 characters")
     private String author;
-    @NotNull
+    @NotNull (message = "this field cannot be empty")
+    @Min(value = 1900, message = "Smallest value is 1900")
+    @Digits(integer = 4, message = "Year of birth has to be 4 digits long", fraction = 0)
     private int year;
+
+    private int loaner;
 
     public String getAuthor() {
         return author;

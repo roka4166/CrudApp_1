@@ -1,10 +1,11 @@
 package Crud.app.models;
-
-import javax.validation.Valid;
 import javax.validation.constraints.*;
+import java.util.List;
 
 
 public class Person {
+
+    private List<Book> bookList;
     private int id;
 
     @NotEmpty(message = "Name should not be empty")
