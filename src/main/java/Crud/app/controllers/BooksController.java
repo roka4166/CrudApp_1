@@ -3,6 +3,7 @@ package Crud.app.controllers;
 import Crud.app.dao.BookDAO;
 import Crud.app.dao.PersonDAO;
 import Crud.app.models.Book;
+import Crud.app.models.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,7 +24,7 @@ public class BooksController {
     }
 
     @GetMapping
-    public String index(Model model){
+    public String index(Model model, @ModelAttribute("person") Person person){
         model.addAttribute("books", bookDAO.index());
         return "books/index";
     }
@@ -32,6 +33,7 @@ public class BooksController {
     public String show(@PathVariable("id") int id, Model model){
         model.addAttribute("book", bookDAO.show(id));
         model.addAttribute("people", personDAO.index());
+        model.addAttribute("person1", new Person());
         return "books/show";
     }
 
@@ -67,6 +69,18 @@ public class BooksController {
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
         bookDAO.delete(id);
+        return "redirect:/books";
+    }
+
+    @PostMapping("/{id}/give")
+    public String give(@PathVariable("id") int id, @ModelAttribute Person person){
+        bookDAO.loanBook(person, id);
+        return "redirect:/books";
+    }
+
+    @PatchMapping("/{id}/release")
+    public String release(@PathVariable("id") int id){
+        bookDAO.releaseBook(id);
         return "redirect:/books";
     }
 

@@ -1,6 +1,7 @@
 package Crud.app.dao;
 
 import Crud.app.models.Book;
+import Crud.app.models.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -39,5 +40,13 @@ public class BookDAO {
 
     public void delete(int id){
         jdbcTemplate.update("DELETE from book where id=?", id);
+    }
+
+    public void loanBook(Person person, int bookId){
+        jdbcTemplate.update("update book set loaner=? where id=?", person.getId(), bookId);
+    }
+
+    public void releaseBook(int bookId){
+        jdbcTemplate.update("update book set loaner=? where id=?", null, bookId);
     }
 }
