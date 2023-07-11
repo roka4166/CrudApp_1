@@ -3,7 +3,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.List;
 @Entity
-@Table(name = "people")
+@Table(name = "person")
 
 public class Person {
     @Id

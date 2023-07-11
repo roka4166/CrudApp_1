@@ -23,8 +23,10 @@ public class BooksController {
     }
 
     @GetMapping
-    public String index(Model model, @ModelAttribute("person") Person person){
-        model.addAttribute("books", booksService.index());
+    public String index(Model model, @ModelAttribute("person") Person person, @RequestParam(required = false, value = "page") Integer page,
+                        @RequestParam(required = false, value = "books_per_page") Integer books_per_page,
+                        @RequestParam(required = false, defaultValue = "false", value = "sort_by_year") String sort_by_year){
+        model.addAttribute("books", booksService.index(page, books_per_page, sort_by_year));
         return "books/index";
     }
 
@@ -81,6 +83,12 @@ public class BooksController {
     public String release(@PathVariable("id") int id){
         booksService.releaseBook(id);
         return "redirect:/books";
+    }
+
+    @GetMapping("/search")
+    public String search(@RequestParam(required = false, defaultValue = "", value = "bookSearch") String bookSearch, Model model){
+        model.addAttribute("book", booksService.index(bookSearch));
+        return "books/search";
     }
 
 

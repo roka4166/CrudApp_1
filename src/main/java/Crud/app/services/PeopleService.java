@@ -16,6 +16,7 @@ import java.util.Optional;
 public class PeopleService {
 
     private final PeopleRepository peopleRepository;
+
     private final BooksRepository booksRepository;
     @Autowired
 
@@ -47,10 +48,10 @@ public class PeopleService {
     }
 
     public List<Book> getBooksByPersonId(int id){
-        return booksRepository.findByLoaner(id);
+        return booksRepository.findBooksByLoanerId(id);
     }
 
     public Optional<Person> findByFullName(String name){
-        return peopleRepository.findByName(name);
+        return peopleRepository.findByNameLastname(name);
     }
 }

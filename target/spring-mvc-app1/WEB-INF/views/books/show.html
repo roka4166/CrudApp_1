@@ -19,7 +19,7 @@
 
 <div th:if="${book.getLoaner() != null}">
   <span>This book is taken by:</span>
-  <label th:each="person : ${people}" th:if="${person.getId() == book.getLoaner()}" th:text="${person.getNameLastname()}"></label>
+  <label th:each="person : ${people}" th:if="${person.getId() == book.getLoaner().getId()}" th:text="${person.getNameLastname()}"></label>
   <form th:method="PATCH" th:action="@{/books/{id}/release (id=${book.getId()})}" th:field="*{id}">
     <input type="submit" value="Release book">
   </form>

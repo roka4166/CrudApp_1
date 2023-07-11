@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search</title>
+</head>
+
+
+<form id="search">
+    <label for="q">Search book</label>
+    <input type="text" id="q" name="bookSearch" placeholder="Search...">
+    <button>Search</button>
+</form>
+
+<div th:if="${book == null}">
+    <p>Could not find any book</p>
+</div>
+
+<div th:if="${book != null}">
+    <a th:href="@{/books/{id}(id=${book.getId()})}"
+       th:text="${book.getName() + ', ' + book.getAuthor() + ', ' + book.getYear()}">user</a>
+    <span>This book is taken by:</span>
+    <a th:text="${book.getLoaner().getNameLastname() +  ' '+ book.getLoaner().getYearOfBirth()}"></a>
+
+</div>
+<body>
+
+</body>
+</html>

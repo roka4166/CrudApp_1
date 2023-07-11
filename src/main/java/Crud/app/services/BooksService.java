@@ -5,6 +5,8 @@ import Crud.app.models.Person;
 import Crud.app.repositories.BooksRepository;
 import Crud.app.repositories.PeopleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,8 +24,24 @@ public class BooksService {
         this.booksRepository = booksRepository;
     }
 
-    public List<Book> index(){
+    public List<Book> index(Integer page, Integer books_per_page, String sort_by_year){
+        if (page != null && books_per_page != null && sort_by_year.equals("true")){
+            return booksRepository.findAll(PageRequest.of(page,books_per_page, Sort.by("year"))).getContent();
+        }
+        else if(page != null && books_per_page != null){
+            return booksRepository.findAll(PageRequest.of(page, books_per_page)).getContent();
+        }
+        else if(sort_by_year.equals("true")){
+            return booksRepository.findAll(Sort.by("year"));
+        }
         return booksRepository.findAll();
+    }
+
+    public Book index(String bookSearch){
+        if(!bookSearch.equals("")){
+            return booksRepository.findBookByNameStartingWith(bookSearch);
+        }
+        return null;
     }
 
     public Book show(int id){
@@ -49,12 +67,18 @@ public class BooksService {
     }
     @Transactional
     public void loanBook(Person person, int bookId) {
-        Book book =(Book) booksRepository.findById(bookId).orElse(null);
-        book.setLoaner(person);
-        booksRepository.save(book);
+        Book book =booksRepository.findById(bookId).orElse(null);
+        if(book != null){
+            book.setLoaner(person);
+            booksRepository.save(book);
+        }
     }
     @Transactional
     public void releaseBook(int id) {
-
+        Book book = booksRepository.findById(id).orElse(null);
+        if(book != null){
+            book.setLoaner(null);
+            booksRepository.save(book);
+        }
     }
 }
