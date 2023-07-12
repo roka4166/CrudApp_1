@@ -1,10 +1,17 @@
 package Crud.app.models;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.util.Date;
+
 @Entity
 @Table(name = "book")
 public class Book {
+    @Transient
+    private boolean overDue = false;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -25,6 +32,10 @@ public class Book {
     @JoinColumn(name = "loaner", referencedColumnName = "id")
     private Person loaner;
 
+    @Column(name = "taken_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date taken_at;
+
     public Person getLoaner() {
         return loaner;
     }
@@ -32,9 +43,19 @@ public class Book {
     public void setLoaner(Person loaner) {
         this.loaner = loaner;
     }
+    public boolean isOverDue() {
+        return overDue;
+    }
+    public Date getTaken_at() {
+        return taken_at;
+    }
 
-
-
+    public void setTaken_at(Date taken_at) {
+        this.taken_at = taken_at;
+    }
+    public void setOverDue(boolean overDue) {
+        this.overDue = overDue;
+    }
     public String getAuthor() {
         return author;
     }

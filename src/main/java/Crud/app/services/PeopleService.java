@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,7 +49,16 @@ public class PeopleService {
     }
 
     public List<Book> getBooksByPersonId(int id){
-        return booksRepository.findBooksByLoanerId(id);
+        List<Book> books = booksRepository.findBooksByLoanerId(id);
+        for(Book book : books){
+            Date takenAt = book.getTaken_at();
+            Date today = new Date();
+            long difference_In_Time = today.getTime() - takenAt.getTime();
+            if(difference_In_Time > 864000000){
+                book.setOverDue(true);
+            }
+        }
+        return books;
     }
 
     public Optional<Person> findByFullName(String name){

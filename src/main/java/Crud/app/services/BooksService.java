@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 @Service
@@ -25,10 +26,10 @@ public class BooksService {
     }
 
     public List<Book> index(Integer page, Integer books_per_page, String sort_by_year){
-        if (page != null && books_per_page != null && sort_by_year.equals("true")){
-            return booksRepository.findAll(PageRequest.of(page,books_per_page, Sort.by("year"))).getContent();
-        }
-        else if(page != null && books_per_page != null){
+        if (page != null && books_per_page != null){
+            if(sort_by_year.equals("true")){
+                return booksRepository.findAll(PageRequest.of(page,books_per_page, Sort.by("year"))).getContent();
+            }
             return booksRepository.findAll(PageRequest.of(page, books_per_page)).getContent();
         }
         else if(sort_by_year.equals("true")){
@@ -70,6 +71,7 @@ public class BooksService {
         Book book =booksRepository.findById(bookId).orElse(null);
         if(book != null){
             book.setLoaner(person);
+            book.setTaken_at(new Date());
             booksRepository.save(book);
         }
     }
