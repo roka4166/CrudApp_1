@@ -16,12 +16,10 @@ import java.util.Optional;
 @Service
 @Transactional(readOnly = true)
 public class BooksService {
-    private final PeopleRepository peopleRepository;
     private final BooksRepository booksRepository;
 
     @Autowired
-    public BooksService(PeopleRepository peopleRepository, BooksRepository booksRepository) {
-        this.peopleRepository = peopleRepository;
+    public BooksService(BooksRepository booksRepository) {
         this.booksRepository = booksRepository;
     }
 
@@ -53,18 +51,17 @@ public class BooksService {
         booksRepository.save(person);
     }
     @Transactional
-    public void update(int id, Book updatedPerson){
-        updatedPerson.setId(id);
-        booksRepository.save(updatedPerson);
+    public void update(int id, Book updatedBook){
+        Book bookToBeUpdated = booksRepository.findById(id).get();
+
+        updatedBook.setId(id);
+        updatedBook.setLoaner(bookToBeUpdated.getLoaner());
+        booksRepository.save(updatedBook);
     }
 
     @Transactional
     public void delete(int id){
         booksRepository.deleteById(id);
-    }
-
-    public Optional<Person> getLoaner(int id){
-        return peopleRepository.findById(id);
     }
     @Transactional
     public void loanBook(Person person, int bookId) {
@@ -80,6 +77,7 @@ public class BooksService {
         Book book = booksRepository.findById(id).orElse(null);
         if(book != null){
             book.setLoaner(null);
+            book.setTaken_at(null);
             booksRepository.save(book);
         }
     }
